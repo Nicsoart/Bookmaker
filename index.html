@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Тест Яндекс Игр</title>
+    <title>Решение 1</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -24,41 +24,23 @@
             width: 80%;
             max-width: 300px;
         }
-        .notice {
-            font-size: 14px;
-            color: #666;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
-    <h2>Тест открытия игры</h2>
-    <button class="tg-button" onclick="openYandexGame()">
-        Играть сейчас
+    <h2>Решение 1</h2>
+    <button class="tg-button" onclick="openGame()">
+        Запустить игру
     </button>
-    <p class="notice">Откроется в Telegram-браузере</p>
 
     <script>
         const tg = Telegram.WebApp;
-        
-        // Инициализация Mini App
         tg.ready();
         tg.expand();
 
-        function openYandexGame() {
+        function openGame() {
             const gameUrl = 'https://yandex.ru/games/developer/16504#app=444190';
-            
-            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = `tg://proxy?url=${encodeURIComponent(gameUrl)}`;
-                document.body.appendChild(iframe);
-                setTimeout(() => document.body.removeChild(iframe), 100);
-            } else {
-                tg.openLink(`tg://proxy?url=${encodeURIComponent(gameUrl)}`);
-            }
-            
-            setTimeout(() => tg.close(), 500);
+            window.location.href = `tg://proxy?url=${encodeURIComponent(gameUrl)}`;
+            setTimeout(() => tg.close(), 300);
         }
     </script>
 </body>
