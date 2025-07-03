@@ -5,27 +5,46 @@
     <title>Офферы</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; padding: 15px; }
-        .offer { background: #fff; padding: 15px; margin: 10px; border-radius: 10px; }
+        /* Стили остаются прежними */
+        body { font-family: Arial, sans-serif; padding: 15px; background: #f5f5f5; }
+        .offers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .offer { background: white; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; }
+        .offer img { width: 60px; height: 60px; object-fit: contain; }
     </style>
 </head>
 <body>
     <div id="app">
-        <h2>Офферы</h2>
-        <div class="offer" onclick="Telegram.WebApp.openLink('https://yandex.ru/games/developer/16504#app=444190')">
-            Оффер 1
+        <h2>Выберите оффер</h2>
+        <div class="offers">
+            <!-- Оффер 1 -->
+            <div class="offer" onclick="openInApp('https://example.com/offer1')">
+                <img src="https://cdn-icons-png.flaticon.com/512/3132/3132693.png" alt="Оффер 1">
+                <p>Бонус 100%</p>
+            </div>
+            
+            <!-- Оффер 2 -->
+            <div class="offer" onclick="openInApp('https://example.com/offer2')">
+                <img src="https://cdn-icons-png.flaticon.com/512/1037/1037855.png" alt="Оффер 2">
+                <p>Фрибет 500₽</p>
+            </div>
         </div>
     </div>
 
     <script>
         const tg = Telegram.WebApp;
-        tg.ready(); // Важно!
+        tg.ready();
         tg.expand();
-        
-        // Для кнопки "Назад"
+
+        // Функция для открытия ссылки внутри Mini App
+        function openInApp(url) {
+            tg.openLink(url, { try_instant_view: true }); 
+            // Параметр try_instant_view позволяет использовать Instant View
+        }
+
+        // Кнопка "Назад" (если нужно)
         tg.BackButton.show();
         tg.onEvent('backButtonClicked', () => {
-            tg.close(); // Закрыть Mini App или вернуться
+            tg.close();
         });
     </script>
 </body>
