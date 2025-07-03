@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Решение 4</title>
+    <title>Решение 5</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -27,7 +27,7 @@
     </style>
 </head>
 <body>
-    <h2>Решение 4</h2>
+    <h2>Решение 5</h2>
     <button class="tg-button" onclick="openGame()">
         Запустить игру
     </button>
@@ -40,19 +40,8 @@
         function openGame() {
             const gameUrl = 'https://yandex.ru/games/developer/16504#app=444190';
             
-            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-                // Метод для iOS с подтверждением
-                Telegram.WebApp.showConfirm(
-                    'Открыть игру в Telegram?',
-                    function(isConfirmed) {
-                        if (isConfirmed) {
-                            window.open(`tg://proxy?url=${encodeURIComponent(gameUrl)}`, '_blank');
-                        }
-                    }
-                );
-            } else {
-                Telegram.WebApp.openLink(`tg://proxy?url=${encodeURIComponent(gameUrl)}`);
-            }
+            // Для всех платформ используем прямой вызов
+            window.location.href = `tg://proxy?url=${encodeURIComponent(gameUrl)}`;
             setTimeout(() => tg.close(), 300);
         }
     </script>
