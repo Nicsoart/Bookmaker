@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Решение 1</title>
+    <title>Решение 2</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -27,7 +27,7 @@
     </style>
 </head>
 <body>
-    <h2>Решение 1</h2>
+    <h2>Решение 2</h2>
     <button class="tg-button" onclick="openGame()">
         Запустить игру
     </button>
@@ -39,7 +39,13 @@
 
         function openGame() {
             const gameUrl = 'https://yandex.ru/games/developer/16504#app=444190';
-            window.location.href = `tg://proxy?url=${encodeURIComponent(gameUrl)}`;
+            
+            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                Telegram.WebApp.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(gameUrl)}`);
+            } else {
+                Telegram.WebApp.openLink(`tg://proxy?url=${encodeURIComponent(gameUrl)}`);
+            }
+            
             setTimeout(() => tg.close(), 300);
         }
     </script>
