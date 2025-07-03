@@ -5,101 +5,28 @@
     <title>Офферы</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 15px;
-            background: #f5f5f5;
-        }
-        .offers {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .offer {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            cursor: pointer;
-        }
-        .offer img {
-            width: 50px;
-            height: 50px;
-        }
-        .offer p {
-            margin: 5px 0 0;
-            font-weight: bold;
-        }
-        .back-button {
-            display: none; /* Показываем только на экране оффера */
-            margin: 20px auto;
-            padding: 10px 15px;
-            background: #0088cc;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .offer-content {
-            display: none; /* Скрываем контент оффера */
-        }
+        body { font-family: Arial, sans-serif; padding: 15px; }
+        .offer { background: #fff; padding: 15px; margin: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
-    <!-- Главный экран: список офферов -->
-    <div id="main-screen">
-        <h2>Выберите оффер</h2>
-        <div class="offers">
-            <div class="offer" onclick="showOffer('offer1')">
-                <img src="https://avatars.mds.yandex.net/get-games/2977039/2a0000019766acde35887608cf85325236a9/pjpg128x128" alt="Оффер 1">
-                <p>Оффер 1</p>
-            </div>
-            <div class="offer" onclick="showOffer('offer2')">
-                <img src="https://avatars.mds.yandex.net/get-games/2977039/2a0000019766acde35887608cf85325236a9/pjpg128x128" alt="Оффер 2">
-                <p>Оффер 2</p>
-            </div>
+    <div id="app">
+        <h2>Офферы</h2>
+        <div class="offer" onclick="Telegram.WebApp.openLink('https://example.com/offer1')">
+            Оффер 1
         </div>
-    </div>
-
-    <!-- Контент офферов (скрыт по умолчанию) -->
-    <div id="offer1" class="offer-content">
-        <h2>Оффер 1</h2>
-        <p>Описание оффера 1. <a href="https://yandex.ru/games/developer/16504#app=444190" target="_blank">Перейти</a></p>
-        <button class="back-button" onclick="backToMain()">← Назад</button>
-    </div>
-
-    <div id="offer2" class="offer-content">
-        <h2>Оффер 2</h2>
-        <p>Описание оффера 2. <a href="hhttps://yandex.ru/games/developer/16504#app=444190" target="_blank">Перейти</a></p>
-        <button class="back-button" onclick="backToMain()">← Назад</button>
     </div>
 
     <script>
         const tg = Telegram.WebApp;
-
-        // Показываем выбранный оффер
-        function showOffer(offerId) {
-            document.getElementById('main-screen').style.display = 'none';
-            document.getElementById(offerId).style.display = 'block';
-            tg.BackButton.show(); // Показываем кнопку "Назад" в Telegram
-        }
-
-        // Возврат к списку офферов
-        function backToMain() {
-            document.querySelectorAll('.offer-content').forEach(el => {
-                el.style.display = 'none';
-            });
-            document.getElementById('main-screen').style.display = 'block';
-            tg.BackButton.hide(); // Скрываем кнопку "Назад"
-        }
-
-        // Обработчик кнопки "Назад" в Telegram
-        tg.onEvent('backButtonClicked', backToMain);
-
-        // Инициализация
-        tg.expand(); // Раскрываем на весь экран
-        tg.BackButton.hide(); // Скрываем кнопку при запуске
+        tg.ready(); // Важно!
+        tg.expand();
+        
+        // Для кнопки "Назад"
+        tg.BackButton.show();
+        tg.onEvent('backButtonClicked', () => {
+            tg.close(); // Закрыть Mini App или вернуться
+        });
     </script>
 </body>
 </html>
