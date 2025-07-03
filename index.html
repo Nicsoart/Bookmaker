@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Автопереход</title>
+    <title>Тест Яндекс Игр</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -11,55 +11,55 @@
             padding: 20px;
             background: #f5f5f5;
         }
-        .loader {
-            margin: 50px auto;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #0088cc;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
+        .tg-button {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 30px auto;
+            display: block;
+            width: 80%;
+            max-width: 300px;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .notice {
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div id="loader" class="loader"></div>
-    <p>Идет перенаправление...</p>
+    <h2>Тест открытия игры</h2>
+    <button class="tg-button" onclick="openYandexGame()">
+        Играть сейчас
+    </button>
+    <p class="notice">Откроется в Telegram-браузере</p>
 
     <script>
         const tg = Telegram.WebApp;
         
-        // Основная функция перенаправления
-        function redirect() {
-            const targetUrl = 'https://redirspinner.com/2i14?p=%2Fbonus%2Frules%2F1st';
-            
-            // Попытка открыть через Telegram WebApp
-            if (tg && tg.openLink) {
-                tg.openLink(targetUrl, { 
-                    try_instant_view: false 
-                });
-                
-                // Закрываем Mini App после открытия ссылки
-                setTimeout(() => {
-                    tg.close();
-                }, 300);
-            } 
-            // Fallback для браузера/тестов
-            else {
-                window.location.href = targetUrl;
-            }
-        }
-
-        // Инициализация
+        // Инициализация Mini App
         tg.ready();
         tg.expand();
-        
-        // Запускаем перенаправление при загрузке
-        redirect();
+
+        function openYandexGame() {
+            const gameUrl = 'https://yandex.ru/games/developer/16504#app=444190';
+            
+            // Основной метод (для Android и новых версий iOS)
+            try {
+                tg.openLink(`tg://proxy?url=${encodeURIComponent(gameUrl)}`);
+            } 
+            // Fallback для старых версий iOS
+            catch (e) {
+                window.open(gameUrl, '_blank');
+            }
+            
+            // Закрываем Mini App через 0.5 секунды
+            setTimeout(() => tg.close(), 500);
+        }
     </script>
 </body>
 </html>
