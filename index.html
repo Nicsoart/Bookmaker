@@ -2,65 +2,55 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Открытие игры</title>
+    <title>Игры</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, sans-serif;
             text-align: center;
             padding: 20px;
             background: #f5f5f5;
         }
-        .tg-btn {
+        .game-btn {
             background: #0088cc;
             color: white;
             border: none;
             padding: 15px 25px;
             border-radius: 10px;
             font-size: 16px;
-            cursor: pointer;
-            margin: 30px 0;
-        }
-        .ios-warning {
-            color: #ff3b30;
-            font-size: 14px;
-            display: none; /* Показываем только на iOS */
+            margin: 20px auto;
+            display: block;
+            width: 80%;
+            max-width: 300px;
         }
     </style>
 </head>
 <body>
-    <h2>Яндекс Игры</h2>
-    <button class="tg-btn" onclick="openGame()">
-        Запустить игру
+    <button class="game-btn" onclick="openGame()">
+        Играть сейчас
     </button>
-    <p class="ios-warning">Нажмите "Открыть" во всплывающем окне</p>
 
     <script>
         const tg = Telegram.WebApp;
         const gameUrl = 'https://yandex.ru/games/developer/16504#app=444190';
         
-        // Определяем iOS
-        const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-        document.querySelector('.ios-warning').style.display = isIOS ? 'block' : 'none';
-
         function openGame() {
-            if (isIOS) {
-                // Для iOS используем showAlert с кнопкой
-                tg.showAlert(
-                    'Открыть Яндекс Игры?', 
-                    [{
-                        type: 'open',
-                        text: 'Открыть',
-                        url: gameUrl
-                    }]
-                );
-            } else {
-                // Для Android и других ОС
-                tg.openLink(`tg://proxy?url=${encodeURIComponent(gameUrl)}`);
+            // Универсальный метод для всех платформ
+            const tgUrl = `tg://proxy?url=${encodeURIComponent(gameUrl)}`;
+            
+            // 1. Пытаемся открыть через WebApp
+            if (tg.platform !== 'ios') {
+                tg.openLink(tgUrl);
+            } 
+            // 2. Для iOS используем deep link
+            else {
+                window.location.href = tgUrl;
             }
-            tg.close();
+            
+            // Закрываем Mini App
+            setTimeout(() => tg.close(), 300);
         }
-        
+
         tg.ready();
         tg.expand();
     </script>
