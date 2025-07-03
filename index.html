@@ -2,92 +2,64 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Запуск игры</title>
+    <title>Тест Яндекс Игр</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            font-family: -apple-system, sans-serif;
+            font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
             background: #f5f5f5;
         }
-        #launch-btn {
+        .tg-button {
             background: #0088cc;
             color: white;
             border: none;
             padding: 15px 25px;
             border-radius: 10px;
             font-size: 16px;
+            cursor: pointer;
             margin: 30px auto;
             display: block;
-            cursor: pointer;
+            width: 80%;
+            max-width: 300px;
         }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #0088cc;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-            display: none;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .notice {
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h2>Яндекс Игры</h2>
-    <button id="launch-btn">Запустить игру</button>
-    <div class="loader" id="loader"></div>
+    <h2>Тест открытия игры</h2>
+    <button class="tg-button" onclick="openYandexGame()">
+        Играть сейчас
+    </button>
+    <p class="notice">Откроется в Telegram-браузере</p>
 
     <script>
         const tg = Telegram.WebApp;
-        const gameUrl = 'https://yandex.ru/games/developer/16504#app=444190';
-        const btn = document.getElementById('launch-btn');
-        const loader = document.getElementById('loader');
-
-        // Определение платформы с учетом новых iOS
-        function isIOS() {
-            return /iPhone|iPad|iPod/i.test(navigator.userAgent) || 
-                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        }
-
-        // Улучшенное открытие ссылки
-        function launchGame() {
-            btn.style.display = 'none';
-            loader.style.display = 'block';
-            
-            // Универсальный метод
-            const openLink = (url) => {
-                if (tg.platform === 'android' || !isIOS()) {
-                    tg.openLink(`tg://proxy?url=${encodeURIComponent(url)}`);
-                } else {
-                    // Специальный метод для iOS
-                    const iframe = document.createElement('iframe');
-                    iframe.style.display = 'none';
-                    iframe.src = `tg://proxy?url=${encodeURIComponent(url)}`;
-                    document.body.appendChild(iframe);
-                    setTimeout(() => document.body.removeChild(iframe), 100);
-                }
-                setTimeout(() => tg.close(), 500);
-            };
-
-            // Попытка 1: Основной метод
-            try {
-                openLink(gameUrl);
-            } catch (e) {
-                // Попытка 2: Альтернативный вариант
-                window.location.href = gameUrl;
-            }
-        }
-
-        // Инициализация
+        
+        // Инициализация Mini App
         tg.ready();
         tg.expand();
-        btn.addEventListener('click', launchGame);
+
+        function openYandexGame() {
+            const gameUrl = 'https://yandex.ru/games/developer/16504#app=444190';
+            
+            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = `tg://proxy?url=${encodeURIComponent(gameUrl)}`;
+                document.body.appendChild(iframe);
+                setTimeout(() => document.body.removeChild(iframe), 100);
+            } else {
+                tg.openLink(`tg://proxy?url=${encodeURIComponent(gameUrl)}`);
+            }
+            
+            setTimeout(() => tg.close(), 500);
+        }
     </script>
 </body>
 </html>
