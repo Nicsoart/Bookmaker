@@ -2,89 +2,64 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Яндекс Игры</title>
+    <title>Тест Яндекс Игр</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
             background: #f5f5f5;
         }
-        .launch-btn {
+        .tg-button {
             background: #0088cc;
             color: white;
             border: none;
             padding: 15px 25px;
             border-radius: 10px;
             font-size: 16px;
-            margin: 40px auto;
+            cursor: pointer;
+            margin: 30px auto;
             display: block;
             width: 80%;
             max-width: 300px;
-            cursor: pointer;
         }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #0088cc;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-            display: none;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .notice {
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <button class="launch-btn" onclick="launchGame()">
+    <h2>Тест открытия игры</h2>
+    <button class="tg-button" onclick="openYandexGame()">
         Играть сейчас
     </button>
-    <div class="loader" id="loader"></div>
+    <p class="notice">Откроется в Telegram-браузере</p>
 
     <script>
         const tg = Telegram.WebApp;
-        const loader = document.getElementById('loader');
         
-        function launchGame() {
-            const gameUrl = 'https://yandex.ru/games/developer/16504#app=444190';
-            document.querySelector('.launch-btn').style.display = 'none';
-            loader.style.display = 'block';
-            
-            // Универсальный метод для всех платформ
-            const openInApp = () => {
-                const link = document.createElement('a');
-                link.href = gameUrl;
-                link.target = '_blank';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            };
-
-            // Для Android пробуем tg://proxy
-            if (tg.platform === 'android') {
-                try {
-                    tg.openLink(`tg://proxy?url=${encodeURIComponent(gameUrl)}`);
-                } catch (e) {
-                    openInApp();
-                }
-            } 
-            // Для iOS используем прямой переход
-            else {
-                openInApp();
-            }
-            
-            setTimeout(() => {
-                tg.close();
-            }, 1000);
-        }
-
+        // Инициализация Mini App
         tg.ready();
         tg.expand();
+
+        function openYandexGame() {
+            const gameUrl = 'https://yandex.ru/games/developer/16504#app=444190';
+            
+            // Основной метод (для Android и новых версий iOS)
+            try {
+                tg.openLink(`tg://proxy?url=${encodeURIComponent(gameUrl)}`);
+            } 
+            // Fallback для старых версий iOS
+            catch (e) {
+                window.open(gameUrl, '_blank');
+            }
+            
+            // Закрываем Mini App через 0.5 секунды
+            setTimeout(() => tg.close(), 500);
+        }
     </script>
 </body>
 </html>
