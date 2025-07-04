@@ -2,47 +2,43 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Игровые иконки</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игровые платформы</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body {
+        * {
             margin: 0;
-            padding: 10px;
-            background: #f5f5f5;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            padding: 0;
             box-sizing: border-box;
+        }
+        body {
+            background: #f5f5f5;
+            padding: 5px;
         }
         .icon-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            gap: 8px;
             width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
+            padding: 0 2px;
         }
         .icon {
             width: 100%;
             aspect-ratio: 1/1;
-            background: #ffffff;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
+            background: white;
+            border-radius: 16px;
             overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.15s;
         }
-        .icon:hover {
-            transform: scale(1.05);
+        .icon:active {
+            transform: scale(0.95);
         }
         .icon img {
-            width: 70%;
-            height: 70%;
-            object-fit: contain;
-            border-radius: 15px;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
     </style>
 </head>
@@ -54,7 +50,6 @@
         tg.ready();
         tg.expand();
 
-        // Массив с уникальными иконками и ссылками
         const games = [
             { icon: 'https://i.postimg.cc/L6PRKMjt/1WIN.png', url: 'https://uff.scaletrk.com/click?o=234&a=26186&sub_id1={site_id}&sub_id2={ad_id}&sub_id3={browser}&sub_id4={platform}' },
             { icon: 'https://i.postimg.cc/xdpTj38M/ZenitBet.png', url: 'https://betsxwin.pro/click?o=226&a=26186&sub_id1={site_id}&sub_id2={ad_id}&sub_id3={browser}&sub_id4={platform}' },
@@ -75,14 +70,19 @@
             { icon: 'https://i.postimg.cc/1tLmwRpz/image.png', url: 'https://digital-spreads.top?ref=fap_w37962p112_ref_crm_fromlev2eldo&utm_campaign={site_id}&landing={ad_id}&network={browser}&utm_content={platform}' }
         ];
 
-        // Создаем иконки
         const iconsContainer = document.getElementById('icons-container');
-        const placeholderIcon = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzAwODhjYyIvPjwvc3ZnPg==';
-
-        games.forEach((game, index) => {
+        
+        games.forEach(game => {
             const icon = document.createElement('div');
             icon.className = 'icon';
-            icon.innerHTML = `<img src="${game.icon || placeholderIcon}" alt="Игра ${index+1}">`;
+            
+            const img = document.createElement('img');
+            img.src = game.icon;
+            img.alt = '';
+            img.loading = 'lazy';
+            
+            icon.appendChild(img);
+            
             icon.onclick = () => {
                 try {
                     tg.openLink(`tg://proxy?url=${encodeURIComponent(game.url)}`);
@@ -90,6 +90,7 @@
                     window.open(game.url, '_blank');
                 }
             };
+            
             iconsContainer.appendChild(icon);
         });
     </script>
