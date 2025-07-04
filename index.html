@@ -54,24 +54,44 @@
         tg.ready();
         tg.expand();
 
-        // Создаем 17 иконок
+        // Массив с уникальными иконками и ссылками
+        const games = [
+            { icon: 'https://example.com/icon1.svg', url: 'https://example.com/game1' },
+            { icon: 'https://example.com/icon2.svg', url: 'https://example.com/game2' },
+            { icon: 'https://example.com/icon3.svg', url: 'https://example.com/game3' },
+            { icon: 'https://example.com/icon4.svg', url: 'https://example.com/game4' },
+            { icon: 'https://example.com/icon5.svg', url: 'https://example.com/game5' },
+            { icon: 'https://example.com/icon6.svg', url: 'https://example.com/game6' },
+            { icon: 'https://example.com/icon7.svg', url: 'https://example.com/game7' },
+            { icon: 'https://example.com/icon8.svg', url: 'https://example.com/game8' },
+            { icon: 'https://example.com/icon9.svg', url: 'https://example.com/game9' },
+            { icon: 'https://example.com/icon10.svg', url: 'https://example.com/game10' },
+            { icon: 'https://example.com/icon11.svg', url: 'https://example.com/game11' },
+            { icon: 'https://example.com/icon12.svg', url: 'https://example.com/game12' },
+            { icon: 'https://example.com/icon13.svg', url: 'https://example.com/game13' },
+            { icon: 'https://example.com/icon14.svg', url: 'https://example.com/game14' },
+            { icon: 'https://example.com/icon15.svg', url: 'https://example.com/game15' },
+            { icon: 'https://example.com/icon16.svg', url: 'https://example.com/game16' },
+            { icon: 'https://example.com/icon17.svg', url: 'https://example.com/game17' }
+        ];
+
+        // Создаем иконки
         const iconsContainer = document.getElementById('icons-container');
         const placeholderIcon = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgMThjLTQuNDEgMC04LTMuNTktOC04czMuNTktOCA4LTggOCAzLjU5IDggOC0zLjU5IDgtOCA4eiIgZmlsbD0iIzAwODhjYyIvPjwvc3ZnPg==';
 
-        for (let i = 0; i < 17; i++) {
+        games.forEach((game, index) => {
             const icon = document.createElement('div');
             icon.className = 'icon';
-            icon.innerHTML = `<img src="${placeholderIcon}" alt="Иконка ${i+1}">`;
+            icon.innerHTML = `<img src="${game.icon || placeholderIcon}" alt="Игра ${index+1}">`;
             icon.onclick = () => {
-                const url = 'https://example.com/game-' + (i+1); // Заглушка URL
                 try {
-                    tg.openLink(`tg://proxy?url=${encodeURIComponent(url)}`);
+                    tg.openLink(`tg://proxy?url=${encodeURIComponent(game.url)}`);
                 } catch (e) {
-                    window.open(url, '_blank');
+                    window.open(game.url, '_blank');
                 }
             };
             iconsContainer.appendChild(icon);
-        }
+        });
     </script>
 </body>
 </html>
